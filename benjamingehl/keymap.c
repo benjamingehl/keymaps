@@ -171,13 +171,6 @@ void suspend_wakeup_init_kb(void) {
     suspend_wakeup_init_user();
 }
 
-void set_caps_led_indicator(void) {
-    HSV current_hsv = rgb_matrix_get_hsv();
-    HSV caps_hsv = {V_RED, current_hsv.s, min(current_hsv.v + 50, 255)};
-    RGB caps_rgb = hsv_to_rgb(caps_hsv);
-    rgb_matrix_set_color(LED_CAPS, caps_rgb.r, caps_rgb.g, caps_rgb.b);
-}
-
 void set_fn_led_overlay(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state);
 
@@ -204,10 +197,6 @@ void set_fn_led_overlay(uint8_t led_min, uint8_t led_max) {
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    if (host_keyboard_led_state().caps_lock) {
-        set_caps_led_indicator();
-    }
-
     if (get_highest_layer(layer_state) > BASE) {
         set_fn_led_overlay(led_min, led_max);
     }
