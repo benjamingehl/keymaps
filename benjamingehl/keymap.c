@@ -79,10 +79,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef ENCODER_ENABLE
 
-void encoder_clockwise(void) {
-    bool current_layer = get_highest_layer(layer_state);
-    
-    switch(current_layer) {
+void encoder_clockwise(void) {    
+    switch(get_highest_layer(layer_state)) {
         case BASE: {
             tap_code(KC_VOLU);
             return;
@@ -96,9 +94,7 @@ void encoder_clockwise(void) {
 }
 
 void encoder_counterclockwise(void) {
-    bool current_layer = get_highest_layer(layer_state);
-
-    switch(current_layer) {
+    switch(get_highest_layer(layer_state)) {
         case BASE: {
             tap_code(KC_VOLD);
             return;
@@ -118,7 +114,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         encoder_counterclockwise();
     }
 
-    return true;
+    return false;
 }
 #endif // ENCODER_ENABLE
 
