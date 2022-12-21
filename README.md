@@ -8,6 +8,10 @@ The repo contains my custom keymap for the GMMK Pro featuring:
 - [OS toggle](https://github.com/benjamingehl/keymaps/blob/a18a213d4130de9660ab313de588f077688a10cb/benjamingehl/keymap.c#L110-L114) (`Fn+o`)
 - [Caps lock toggle indicator](https://github.com/benjamingehl/keymaps/blob/a18a213d4130de9660ab313de588f077688a10cb/benjamingehl/keymap.c#L141-L146)
 
+# Setup
+1) Create `env.h` from `env.h.example`
+2) Optional: Setup the Autocorrection library in `autocorrection_dict.txt`
+
 # Building the keymap
 
 1) Run `docker compose up`

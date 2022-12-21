@@ -1,0 +1,3 @@
+## Autocorrection Library - See https://docs.qmk.fm/#/feature_autocorrect
+# Get a better library from https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt
+retrun        -> return

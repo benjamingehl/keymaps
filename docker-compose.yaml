@@ -2,7 +2,11 @@ version: '3'
 services:
   qmk:
     build: .
-    command: bash -c "qmk clean --all && qmk compile -kb gmmk/pro -km benjamingehl && cp -a /root/qmk_firmware/.build/. /root/build/"
+    command: bash -c "
+      qmk clean --all &&
+      qmk generate-autocorrect-data -kb gmmk/pro -km benjamingehl /root/qmk_firmware/keyboards/gmmk/pro/rev1/keymaps/benjamingehl/autocorrection_dict.txt &&
+      qmk compile -kb gmmk/pro -km benjamingehl && 
+      cp -a /root/qmk_firmware/.build/. /root/build/"
     volumes:
       - ./build:/root/build
       - ./benjamingehl:/root/qmk_firmware/keyboards/gmmk/pro/rev1/keymaps/benjamingehl
