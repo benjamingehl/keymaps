@@ -160,7 +160,7 @@ void set_fn_led_overlay(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state);
 
     HSV current_hsv = rgb_matrix_get_hsv();
-    HSV fn_hsv = {(current_hsv.h + 10) % 255, MIN(current_hsv.s + 50, 255), MIN(current_hsv.v + 50, 255)};
+    HSV fn_hsv = {(current_hsv.h + 10) % 256, MIN(current_hsv.s + 50, 255), MIN(current_hsv.v + 50, 255)};
     RGB fn_rgb = hsv_to_rgb(fn_hsv);
 
     for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
