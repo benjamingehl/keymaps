@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include "env.h"
 
-#define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_COLOR
-
 #define BASE 0
 #define FN 1
 
@@ -33,10 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define WIN_MUL_PST LGUI(KC_V)
 #define MAC_MUL_PST LGUI(S(KC_V))
 
-#define LED_CAPS 3
 #define LED_O 52
-#define V_RED 0
-#define min(a, b) (((a) < (b)) ? (a) : (b))
 
 enum custom_keycodes {
     OS_CHG = SAFE_RANGE,
@@ -79,14 +74,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef ENCODER_ENABLE
 
-void encoder_clockwise(void) {    
+void encoder_clockwise(void) {
     switch(get_highest_layer(layer_state)) {
         case BASE: {
             tap_code(KC_VOLU);
             return;
         }
         case FN: {
-            int keycode = is_win_mode ? WIN_REDO : MAC_REDO;
+            uint16_t keycode = is_win_mode ? WIN_REDO : MAC_REDO;
             tap_code16(keycode);
             return;
         }
@@ -100,7 +95,7 @@ void encoder_counterclockwise(void) {
             return;
         }
         case FN: {
-            int keycode = is_win_mode ? WIN_UNDO : MAC_UNDO;
+            uint16_t keycode = is_win_mode ? WIN_UNDO : MAC_UNDO;
             tap_code16(keycode);
             return;
         }
@@ -134,19 +129,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         }
         case PSCR: {
-            int keycode = is_win_mode ? WIN_PSCR : MAC_PSCR;
-            tap_code16(keycode);
+            uint16_t kc = is_win_mode ? WIN_PSCR : MAC_PSCR;
+            tap_code16(kc);
             break;
         }
         case DEL_WRD: {
-            int keycode = is_win_mode ? WIN_SEL_WRD : MAC_SEL_WRD;
-            tap_code16(keycode);
+            uint16_t kc = is_win_mode ? WIN_SEL_WRD : MAC_SEL_WRD;
+            tap_code16(kc);
             tap_code(KC_BSPC);
             return false;
         }
         case MUL_PST: {
-            int keycode = is_win_mode ? WIN_MUL_PST : MAC_MUL_PST;
-            tap_code16(keycode);
+            uint16_t kc = is_win_mode ? WIN_MUL_PST : MAC_MUL_PST;
+            tap_code16(kc);
             break;
         }
     }
@@ -161,21 +156,11 @@ void keyboard_post_init_user(void) {
     rgb_matrix_set_color_all(255, 137, 0);
 }
 
-void suspend_power_down_kb(void) {
-    rgb_matrix_set_suspend_state(true);
-    suspend_power_down_user();
-}
-
-void suspend_wakeup_init_kb(void) {
-    rgb_matrix_set_suspend_state(false);
-    suspend_wakeup_init_user();
-}
-
 void set_fn_led_overlay(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state);
 
     HSV current_hsv = rgb_matrix_get_hsv();
-    HSV fn_hsv = {(current_hsv.h + 10) % 255, min(current_hsv.s + 50, 255), min(current_hsv.v + 50, 255)};
+    HSV fn_hsv = {(current_hsv.h + 10) % 255, MIN(current_hsv.s + 50, 255), MIN(current_hsv.v + 50, 255)};
     RGB fn_rgb = hsv_to_rgb(fn_hsv);
 
     for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
