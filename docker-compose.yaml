@@ -1,6 +1,7 @@
 services:
   qmk:
     build: .
+    image: keymaps-qmk:latest
     command: bash -c "
       qmk clean --all &&
       qmk generate-autocorrect-data -kb gmmk/pro -km benjamingehl /root/qmk_firmware/keyboards/gmmk/pro/rev1/keymaps/benjamingehl/autocorrection_dict.txt &&
