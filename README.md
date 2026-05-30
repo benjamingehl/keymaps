@@ -20,4 +20,4 @@ The repo contains my custom keymap for the GMMK Pro featuring:
 3) On successful compilation the built binary for flashing the keyboard should be under the `build` folder
 
 
-*Based on the default [GMMK Pro ANSI keymap](https://github.com/qmk/qmk_firmware/blob/master/keyboards/gmmk/pro/ansi/keymaps/default/keymap.c)*
+*Based on the default [GMMK Pro ANSI keymap](https://github.com/qmk/qmk_firmware/blob/master/keyboards/gmmk/pro/rev1/ansi/keymaps/default/keymap.c)*
