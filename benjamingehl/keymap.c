@@ -38,7 +38,9 @@ enum custom_keycodes {
     PRT_EM,
     PSCR,
     DEL_WRD,
-    MUL_PST
+    MUL_PST,
+    ENC_UNDO,
+    ENC_REDO
 };
 
 bool is_win_mode = false;
@@ -63,55 +65,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [FN] = LAYOUT(
         QK_BOOT, KC_F1,   KC_F2,   _______, _______, _______, _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,          _______,
-        NK_TOGG, RGB_TOG, RGB_VAI, RGB_VAD, RGB_HUI, _______, _______, _______, _______, _______, _______, _______, _______, DEL_WRD,          _______,
+        NK_TOGG, RM_TOGG, RM_VALU, RM_VALD, RM_HUEU, _______, _______, _______, _______, _______, _______, _______, _______, DEL_WRD,          _______,
         _______, _______, _______, PRT_EM,  _______, _______, _______, _______, _______, OS_CHG,  _______, _______, _______, _______,          _______,
         CW_TOGG, AC_TOGG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          _______,
-        KC_LSFT,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_RSFT, RGB_MOD, _______,
-        _______, _______, _______,                            _______,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
+        KC_LSFT,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_RSFT, RM_NEXT, _______,
+        _______, _______, _______,                            _______,                            _______, _______, _______, RM_SPDD, RM_PREV, RM_SPDU
     ),
 };
 // clang-format on
 
-#ifdef ENCODER_ENABLE
-
-void encoder_clockwise(void) {
-    switch(get_highest_layer(layer_state)) {
-        case BASE: {
-            tap_code(KC_VOLU);
-            return;
-        }
-        case FN: {
-            uint16_t keycode = is_win_mode ? WIN_REDO : MAC_REDO;
-            tap_code16(keycode);
-            return;
-        }
-    }
-}
-
-void encoder_counterclockwise(void) {
-    switch(get_highest_layer(layer_state)) {
-        case BASE: {
-            tap_code(KC_VOLD);
-            return;
-        }
-        case FN: {
-            uint16_t keycode = is_win_mode ? WIN_UNDO : MAC_UNDO;
-            tap_code16(keycode);
-            return;
-        }
-    }
-}
-
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (clockwise) {
-        encoder_clockwise();
-    } else {
-        encoder_counterclockwise();
-    }
-
-    return false;
-}
-#endif // ENCODER_ENABLE
+#ifdef ENCODER_MAP_ENABLE
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+    [BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [FN]   = { ENCODER_CCW_CW(ENC_UNDO, ENC_REDO) },
+};
+#endif // ENCODER_MAP_ENABLE
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -141,6 +109,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         case MUL_PST: {
             uint16_t kc = is_win_mode ? WIN_MUL_PST : MAC_MUL_PST;
+            tap_code16(kc);
+            break;
+        }
+        case ENC_UNDO: {
+            uint16_t kc = is_win_mode ? WIN_UNDO : MAC_UNDO;
+            tap_code16(kc);
+            break;
+        }
+        case ENC_REDO: {
+            uint16_t kc = is_win_mode ? WIN_REDO : MAC_REDO;
             tap_code16(kc);
             break;
         }
