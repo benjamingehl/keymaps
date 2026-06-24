@@ -63,3 +63,4 @@ build/
 # Generated QMK Autocorrect data
 
 **/autocorrect_data.h
+autocorrect_data.h.bak
