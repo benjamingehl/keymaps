@@ -131,7 +131,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-    rgb_matrix_set_color_all(255, 137, 0);
+    rgb_matrix_sethsv_noeeprom(23, 255, 255);
 }
 
 void set_fn_led_overlay(uint8_t led_min, uint8_t led_max) {
