@@ -20,30 +20,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BASE 0
 #define FN 1
 
-#define WIN_REDO LCTL(KC_Y)
 #define MAC_REDO LGUI(S(KC_Z))
-#define WIN_UNDO LCTL(KC_Z)
 #define MAC_UNDO LGUI(KC_Z)
-#define WIN_PSCR LGUI(S(KC_S))
 #define MAC_PSCR LGUI(S(KC_4))
-#define WIN_SEL_WRD C(S(KC_LEFT))
 #define MAC_SEL_WRD A(S(KC_LEFT))
-#define WIN_MUL_PST LGUI(KC_V)
 #define MAC_MUL_PST LGUI(S(KC_V))
 
-#define LED_O 52
-
 enum custom_keycodes {
-    OS_CHG = SAFE_RANGE,
-    PRT_EM,
+    PRT_EM = SAFE_RANGE,
     PSCR,
     DEL_WRD,
     MUL_PST,
     ENC_UNDO,
     ENC_REDO
 };
-
-bool is_win_mode = false;
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -66,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [FN] = LAYOUT(
         QK_BOOT, KC_F1,   KC_F2,   _______, _______, _______, _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,          _______,
         NK_TOGG, RM_TOGG, RM_VALU, RM_VALD, RM_HUEU, _______, _______, _______, _______, _______, _______, _______, _______, DEL_WRD,          _______,
-        _______, _______, _______, PRT_EM,  _______, _______, _______, _______, _______, OS_CHG,  _______, _______, _______, _______,          _______,
+        _______, _______, _______, PRT_EM,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         CW_TOGG, AC_TOGG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          _______,
         KC_LSFT,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_RSFT, RM_NEXT, _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, RM_SPDD, RM_PREV, RM_SPDU
@@ -88,38 +78,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-        case OS_CHG: {
-            is_win_mode = !is_win_mode;
-            break;
-        }
         case PRT_EM: {
             SEND_STRING(MY_EMAIL);
             break;
         }
         case PSCR: {
-            uint16_t kc = is_win_mode ? WIN_PSCR : MAC_PSCR;
-            tap_code16(kc);
+            tap_code16(MAC_PSCR);
             break;
         }
         case DEL_WRD: {
-            uint16_t kc = is_win_mode ? WIN_SEL_WRD : MAC_SEL_WRD;
-            tap_code16(kc);
+            tap_code16(MAC_SEL_WRD);
             tap_code(KC_BSPC);
             return false;
         }
         case MUL_PST: {
-            uint16_t kc = is_win_mode ? WIN_MUL_PST : MAC_MUL_PST;
-            tap_code16(kc);
+            tap_code16(MAC_MUL_PST);
             break;
         }
         case ENC_UNDO: {
-            uint16_t kc = is_win_mode ? WIN_UNDO : MAC_UNDO;
-            tap_code16(kc);
+            tap_code16(MAC_UNDO);
             break;
         }
         case ENC_REDO: {
-            uint16_t kc = is_win_mode ? WIN_REDO : MAC_REDO;
-            tap_code16(kc);
+            tap_code16(MAC_REDO);
             break;
         }
     }
@@ -150,12 +131,6 @@ void set_fn_led_overlay(uint8_t led_min, uint8_t led_max) {
                 rgb_matrix_set_color(index, fn_rgb.r, fn_rgb.g, fn_rgb.b);
             }
         }
-    }
-
-    if (is_win_mode) {
-        rgb_matrix_set_color(LED_O, 200, 0, 0);
-    } else {
-        rgb_matrix_set_color(LED_O, 0, 0, 200);
     }
 }
 
