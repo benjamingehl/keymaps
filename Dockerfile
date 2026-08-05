@@ -9,4 +9,4 @@ RUN apt-get update && apt-get install -y \
 ENV PATH="/root/.local/bin:$PATH"
 RUN pipx install qmk
 RUN qmk setup -y
-CMD qmk compile -kb gmmk/pro -km default
+CMD qmk compile -kb gmmk/pro/rev1/ansi -km default
